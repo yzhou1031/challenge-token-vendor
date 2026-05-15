@@ -52,7 +52,7 @@ contract Vendor is Ownable {
 
     function withdraw() public onlyOwner {
         uint256 ownerAmount = address(this).balance;
-        (bool success, ) = owner().call{value: ownerAmount}("");
+        (bool success,) = owner().call{ value: ownerAmount }("");
         if (!success) revert EthTransferFailed(owner(), ownerAmount);
     }
 
@@ -62,9 +62,8 @@ contract Vendor is Ownable {
         uint256 vendorBalance = address(this).balance;
         if (vendorBalance < amountOfEth) revert InsufficientVendorEthBalance(vendorBalance, amountOfEth);
         yourToken.transferFrom(msg.sender, address(this), amount);
-        (bool success, ) = msg.sender.call{value: amountOfEth}("");
+        (bool success,) = msg.sender.call{ value: amountOfEth }("");
         if (!success) revert EthTransferFailed(msg.sender, amountOfEth);
         emit SellTokens(msg.sender, amount, amountOfEth);
-
     }
 }
