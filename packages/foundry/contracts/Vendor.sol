@@ -9,19 +9,25 @@ contract Vendor is Ownable {
     /// Errors //////
     /////////////////
 
-    // Errors go here...
+    error InvalidEthAmount();
+    error InsufficientVendorTokenBalance(uint256 vendorBalance, uint256 requestedAmount);
+    error EthTransferFailed(address to, uint256 amount);
+    error InvalidTokenAmount();
+    error InsufficientVendorEthBalance(uint256 vendorBalance, uint256 requestedAmount);
 
     //////////////////////
     /// State Variables //
     //////////////////////
 
     YourToken public immutable yourToken;
+    uint256 public constant tokensPerEth = 100;
 
     ////////////////
     /// Events /////
     ////////////////
 
-    // Events go here...
+    event BuyTokens(address indexed buyer, uint256 amountOfETH, uint256 amountOfTokens);
+    event SellTokens(address indexed seller, uint256 amountOfTokens, uint256 amountOfETH);
 
     ///////////////////
     /// Constructor ///
@@ -35,9 +41,30 @@ contract Vendor is Ownable {
     /// Functions /////
     ///////////////////
 
-    function buyTokens() external payable { }
+    function buyTokens() external payable {
+        if (msg.value == 0) revert InvalidEthAmount();
+        uint256 amountOfTokens = msg.value * tokensPerEth;
+        uint256 vendorBalance = yourToken.balanceOf(address(this));
+        if (vendorBalance < amountOfTokens) revert InsufficientVendorTokenBalance(vendorBalance, amountOfTokens);
+        yourToken.transfer(msg.sender, amountOfTokens);
+        emit BuyTokens(msg.sender, msg.value, amountOfTokens);
+    }
 
-    function withdraw() public onlyOwner { }
+    function withdraw() public onlyOwner {
+        uint256 ownerAmount = address(this).balance;
+        (bool success, ) = owner().call{value: ownerAmount}("");
+        if (!success) revert EthTransferFailed(owner(), ownerAmount);
+    }
 
-    function sellTokens(uint256 amount) public { }
+    function sellTokens(uint256 amount) public {
+        if (amount == 0) revert InvalidTokenAmount();
+        uint256 amountOfEth = amount / tokensPerEth;
+        uint256 vendorBalance = address(this).balance;
+        if (vendorBalance < amountOfEth) revert InsufficientVendorEthBalance(vendorBalance, amountOfEth);
+        yourToken.transferFrom(msg.sender, address(this), amount);
+        (bool success, ) = msg.sender.call{value: amountOfEth}("");
+        if (!success) revert EthTransferFailed(msg.sender, amountOfEth);
+        emit SellTokens(msg.sender, amount, amountOfEth);
+
+    }
 }

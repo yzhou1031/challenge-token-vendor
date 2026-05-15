@@ -10,14 +10,14 @@ contract DeployYourToken is ScaffoldETHDeploy {
      * Student TODO:
      * - Put the address you're using in the frontend here (leave address(0) to default to the deployer)
      */
-    address constant FRONTEND_ADDRESS = address(0);
+    address constant FRONTEND_ADDRESS = 0xd22AD43B9CC312D3cc1Be8460C1c20Cf79b6bDfd;
 
     /**
      * Mode switch:
      * - If true: deploy Vendor and seed it with the token balance
      * - If false: send tokens to your frontend address (or deployer if unset)
      */
-    bool constant SEND_TOKENS_TO_VENDOR = false; // Don't switch until Checkpoint 2!
+    bool constant SEND_TOKENS_TO_VENDOR = true; // Don't switch until Checkpoint 2!
 
     function run() external ScaffoldEthDeployerRunner {
         YourToken yourToken = new YourToken();

@@ -1,0 +1,12 @@
+{
+  "challenge": "token-vendor",
+  "status": "completed",
+  "startedAt": "2026-04-25T00:00:00Z",
+  "completedAt": "2026-04-25T00:00:00Z",
+  "checkpoints": {
+    "erc20-token": { "status": "completed", "method": "coded", "startedAt": "2026-04-25T00:00:00Z", "completedAt": "2026-04-25T00:00:00Z" },
+    "buy-tokens": { "status": "completed", "method": "coded", "startedAt": "2026-04-25T00:00:00Z", "completedAt": "2026-04-25T00:00:00Z" },
+    "ownable-withdraw": { "status": "completed", "method": "coded", "startedAt": "2026-04-25T00:00:00Z", "completedAt": "2026-04-25T00:00:00Z" },
+    "sell-tokens": { "status": "completed", "method": "coded", "startedAt": "2026-04-25T00:00:00Z", "completedAt": "2026-04-25T00:00:00Z" }
+  }
+}
