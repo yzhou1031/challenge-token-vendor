@@ -12,6 +12,12 @@ const Events: NextPage = () => {
     eventName: "BuyTokens",
   });
 
+  // SellTokens Events
+  const { data: sellTokenEvents, isLoading: isSellEventsLoading } = useScaffoldEventHistory({
+    contractName: "Vendor",
+    eventName: "SellTokens",
+  });
+
   return (
     <div className="flex items-center flex-col flex-grow pt-10">
       {/* BuyTokens Events */}
@@ -60,7 +66,7 @@ const Events: NextPage = () => {
       </div>
 
       {/* SellTokens Events */}
-      {/* <div className="mt-14">
+      <div className="mt-14">
         <div className="text-center mb-4">
           <span className="block text-2xl font-bold">Sell Token Events</span>
         </div>
@@ -90,7 +96,7 @@ const Events: NextPage = () => {
                     return (
                       <tr key={index}>
                         <td className="text-center">
-                          <Address address={event.args.seller} />
+                          <Address address={event.args?.seller} />
                         </td>
                         <td>{formatEther(event.args?.amountOfTokens || 0n)}</td>
                         <td>{formatEther(event.args?.amountOfETH || 0n)}</td>
@@ -102,7 +108,7 @@ const Events: NextPage = () => {
             </table>
           </div>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };
